@@ -1,25 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_exapmle/user_model.dart';
 
 import 'count_provider.dart';
+import 'di/dependency_injection.dart';
+import 'profile_page.dart';
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends ConsumerStatefulWidget {
   const MyHomePage({super.key, required this.title});
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  ConsumerState<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+
+class _MyHomePageState extends ConsumerState<MyHomePage> {
   TextEditingController controller = TextEditingController();
+  UserModel _userModel = getIt<UserModel>();
+  UserModel _user = getIt<UserModel>();
+
+  @override
+  void initState() {
+    _userModel.setName = "Najot talim";
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(counterProvider, (previous, next) {
+      if (next.count == 5) {}
+    });
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title:Row(
+      children: [
+      Text(_userModel.name ?? "test"),
+      Text(_user.name ?? ""),
+      ],
+    ),
       ),
       body: Center(
         child: Consumer(
@@ -54,24 +74,26 @@ class _MyHomePageState extends State<MyHomePage> {
             child: const Icon(Icons.add),
             onPressed: (){
               //ref.read(counterProvider.notifier).increment();
-              showDialog(context: context, builder: (context){
-                return AlertDialog(
-                  title: Column(
-                    children: [
-                      TextFormField(
-                        controller: controller,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder()
-                        ),
-                      ),
-                      ElevatedButton(onPressed: (){
-                        ref.read(counterProvider.notifier).addName(controller.text);
-                        Navigator.pop(context);
-                      }, child: const Text("Save"))
-                    ],
-                  ),
-                );
-              });
+              // showDialog(context: context, builder: (context){
+              //   return AlertDialog(
+              //     title: Column(
+              //       children: [
+              //         TextFormField(
+              //           controller: controller,
+              //           decoration: const InputDecoration(
+              //             border: OutlineInputBorder()
+              //           ),
+              //         ),
+              //         ElevatedButton(onPressed: (){
+              //           ref.read(counterProvider.notifier).addName(controller.text);
+              //           Navigator.pop(context);
+              //         }, child: const Text("Save"))
+              //       ],
+              //     ),
+              //   );
+              // });
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (_) => ProfilePage()));
             }
           );
         },
