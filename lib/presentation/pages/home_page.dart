@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_exapmle/domain/user_model.dart';
+import 'package:riverpod_exapmle/domain/model/user_model.dart';
 
 import '../../application/controller/count_provider.dart';
 import '../../domain/di/dependency_injection.dart';
